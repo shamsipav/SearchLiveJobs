@@ -1,11 +1,13 @@
 <script>
 	import Header from './Header.svelte';
+	import Heading from './Heading.svelte';
 	import { vacancies } from './vacancies.js'
 	import Vacancy from './Vacancy.svelte';
 	import SecondHeading from './SecondHeading.svelte';
 	import { companies } from './companies.js'
 	import FeaturedCompany from './FeaturedCompany.svelte';
 	import Footer from './Footer.svelte';
+	import Button from './Button.svelte';
 </script>
 
 <Header />
@@ -14,7 +16,7 @@
 	<div class="container container-bg">
 		<div class="main__content">
 			<div class="main__text">
-				<h1 class="main__heading">Search 7 Live Jobs</h1>
+				<Heading size=1>Search 7 Live Jobs</Heading>
 				<p class="main__description">Finding your new job just got easier</p>
 			</div>
 		</div>
@@ -25,7 +27,7 @@
 			<div class="form__group _icon-location_on">
 				<input type="text" placeholder="Set location">
 			</div>
-			<button class="form__submit">Search</button>
+			<Button variant="blue">Search</Button>
 		</form>
 	</div>
 </section>
@@ -41,11 +43,11 @@
 
 <section class="sort">
 	<div class="container container-em">
-		<SecondHeading title="Sort By" size=28 />
+		<Heading size=3>Sort By</Heading>
 		<div class="sort__change">
-			<button class="sort__by active">Jobs by Category</button>
-			<button class="sort__by">Jobs by City</button>
-			<button class="sort__by">Jobs by State</button>
+			<Button variant="lightblue">Jobs by Category</Button>
+			<Button variant="lightblue">Jobs by City</Button>
+			<Button variant="lightblue">Jobs by State</Button>
 		</div>
 		<ul class="sort__list">
 			<li><a href="#">Accounting (5)</a></li>
@@ -60,7 +62,7 @@
 
 <section class="featured">
 	<div class="container">
-		<SecondHeading title="Featured Companies" size=32 />
+		<Heading size=2>Featured Companies</Heading>
 		<div class="companies">
 			{#each companies as company (company.id)}
 				<FeaturedCompany {...company} />
@@ -97,12 +99,6 @@
 		text-align: center;
 		color: #fff;
 	}
-	.main__heading {
-		font-family: "Qanelas";
-		font-weight: 800;
-		font-size: 48px;
-		letter-spacing: 1.5px;
-	}
 	.main__description {
 		font-size: 20px;
 	}
@@ -134,14 +130,6 @@
 	.form__group input {
 		padding: 0px 18px;
 	}
-	.form__submit:first-child {
-		border-right: 1px solid gray;
-	}
-	.form__submit {
-		background-color: #367cff;
-		color: #fff;
-		border-radius: 12px;
-	}
 
 	.vacancies {
 		padding: 100px 0px 0px 0px;
@@ -158,20 +146,6 @@
 		display: flex;
     	justify-content: space-between;
 		margin: 40px 0px 45px 0px;
-	}
-	.sort__by {
-		font-weight: bold;
-		background-color: transparent;
-		color: #334680;
-		padding: 5px 15px;
-    	border-radius: 20px;
-	}
-	.sort__by.active {
-		background-color: #d7dbff;
-	}
-	.sort__by:hover {
-		background-color: #d7dbff;
-		transition: all 0.3s ease;
 	}
 	.sort__list {
 		display: grid;

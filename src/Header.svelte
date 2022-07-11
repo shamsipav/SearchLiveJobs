@@ -1,3 +1,6 @@
+<script>
+	import Button from './Button.svelte';
+</script>
 <header>
     <div class="container">
         <div class="header__logo">Company Logo</div>
@@ -11,9 +14,9 @@
             </ul>
         </nav>
         <div class="header__auth">
-            <button>Sign in</button>
+            <Button>Sign in</Button>
             <span class="line"></span>
-            <button>Sign Up</button>
+            <Button>Sign Up</Button>
         </div>
     </div>
 </header>
