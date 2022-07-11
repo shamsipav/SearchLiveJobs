@@ -1,0 +1,38 @@
+export const vacancies = [
+    {
+        id: 1,
+        companyLogo: "img/apple.png",
+        title: "Apple Main Manager",
+        companyName: "Apple Inc.",
+        companyLocation: "Los Angeles",
+        isFullTime: true,
+        vacancyDate: "April 12, 2020",
+    },
+    {
+        id: 2,
+        companyLogo: "img/nike.png",
+        title: "Nike Product Manager",
+        companyName: "Nike",
+        companyLocation: "Washington",
+        isFullTime: true,
+        vacancyDate: "April 12, 2020",
+    },
+    {
+        id: 3,
+        companyLogo: "img/amazon.png",
+        title: "Amazon Wirehouse Manager",
+        companyName: "Amazon",
+        companyLocation: "San Francisco",
+        isFullTime: false,
+        vacancyDate: "April 12, 2020",
+    },
+    {
+        id: 4,
+        companyLogo: "img/twitter.png",
+        title: "Twitter Execute Manager",
+        companyName: "Twitter",
+        companyLocation: "Los Angeles",
+        isFullTime: true,
+        vacancyDate: "April 12, 2020",
+    },
+];
