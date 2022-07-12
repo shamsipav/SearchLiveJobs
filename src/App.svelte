@@ -9,10 +9,10 @@
 	import Footer from './Footer.svelte';
 	import Button from './Button.svelte';
 
-	let list = vacancies;
+	let vacancyList = vacancies;
 
 	function addVacancy() {
-		list = list.concat({ 
+		vacancyList = vacancyList.concat({ 
 			id: 5,
         	companyLogo: "img/apple.png",
         	title: "Apple Main Manager",
@@ -48,10 +48,16 @@
 
 <section class="vacancies">
 	<div class="container container-sm">
-		{#each list as vacancy (vacancy.id)}
-			<Vacancy {...vacancy} />
-		{/each}
-		<Button on:click={addVacancy} variant="show">View All Job postings (5)</Button>
+		{#if vacancyList.length > 4}
+			{#each vacancyList as vacancy (vacancy.id)}
+				<Vacancy {...vacancy} />
+			{/each}
+		{:else}
+			{#each vacancyList as vacancy (vacancy.id)}
+				<Vacancy {...vacancy} />
+			{/each}
+			<Button on:click={addVacancy} variant="show">View All Job postings (5)</Button>
+		{/if}
 	</div>
 </section>
 
@@ -86,97 +92,3 @@
 </section>
 
 <Footer/>
-
-<style>
-	.main {
-		padding: 50px 0px 0px 0px;
-	}
-	.container-bg {
-		max-width: 1410px;
-	}
-	.container-sm {
-		max-width: 840px;
-	}
-	.container-em {
-		max-width: 550px;
-	}
-	.main__content {
-		background-color: #2aadf9;
-		border-radius: 12px;
-		width: 100%;
-		height: 324px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.main__text {
-		text-align: center;
-		color: #fff;
-	}
-	.main__description {
-		font-size: 20px;
-	}
-	.form {
-		height: 90px;
-		margin: 0 auto;
-    	background-color: #fff;
-    	position: relative;
-    	top: -45px;
-		max-width: 800px;
-		border-radius: 12px;
-		padding: 15px 10px;
-		display: grid;
-    	grid-template-columns: 45% 35% 20%;
-		-webkit-box-shadow: 4px 4px 30px 0px rgba(41, 144, 223, 0.2);
-		-moz-box-shadow: 4px 4px 30px 0px rgba(41, 144, 223, 0.2);
-		box-shadow: 4px 4px 30px 0px rgba(41, 144, 223, 0.2);
-	}
-	.form__group {
-		display: flex;
-    	padding: 10px 0px 10px 20px;
-	}
-	.form__group::before {
-		font-size: 18px;
-		display: flex;
-		align-items: center;
-		color: #367cff;
-	}
-	.form__group input {
-		padding: 0px 18px;
-	}
-
-	.vacancies {
-		padding: 100px 0px 0px 0px;
-	}
-	.vacancies__more {
-		display: block;
-		text-align: center;
-	}
-
-	.sort {
-		padding: 90px 0px 0px 0px;
-	}
-	.sort__change {
-		display: flex;
-    	justify-content: space-between;
-		margin: 40px 0px 45px 0px;
-	}
-	.sort__list {
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
-		grid-template-rows: 1fr 1fr;
-		grid-row-gap: 12px;
-		grid-column-gap: 40px;
-		justify-content: space-between;
-	}
-
-	.featured {
-		padding: 115px 0px 0px 0px;
-	}
-	.companies {
-		margin: 52px 0px 0px 0px;
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr 1fr;
-		gap: 36px;
-	}
-</style>
