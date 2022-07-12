@@ -8,6 +8,20 @@
 	import FeaturedCompany from './FeaturedCompany.svelte';
 	import Footer from './Footer.svelte';
 	import Button from './Button.svelte';
+
+	let list = vacancies;
+
+	function addVacancy() {
+		list = list.concat({ 
+			id: 5,
+        	companyLogo: "img/apple.png",
+        	title: "Apple Main Manager",
+        	companyName: "Apple Inc.",
+        	companyLocation: "Los Angeles",
+        	isFullTime: true,
+        	vacancyDate: "April 12, 2020",
+		 });
+	}
 </script>
 
 <Header />
@@ -34,10 +48,10 @@
 
 <section class="vacancies">
 	<div class="container container-sm">
-		{#each vacancies as vacancy (vacancy.id)}
+		{#each list as vacancy (vacancy.id)}
 			<Vacancy {...vacancy} />
 		{/each}
-		<a href="#" class="vacancies__more">View All Job postings (5)</a>
+		<Button on:click={addVacancy} variant="show">View All Job postings (5)</Button>
 	</div>
 </section>
 
@@ -112,7 +126,7 @@
 		border-radius: 12px;
 		padding: 15px 10px;
 		display: grid;
-    	grid-template-columns: 45% 1fr 20%;
+    	grid-template-columns: 45% 35% 20%;
 		-webkit-box-shadow: 4px 4px 30px 0px rgba(41, 144, 223, 0.2);
 		-moz-box-shadow: 4px 4px 30px 0px rgba(41, 144, 223, 0.2);
 		box-shadow: 4px 4px 30px 0px rgba(41, 144, 223, 0.2);

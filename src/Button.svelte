@@ -14,6 +14,10 @@
 	<button class="lightblue">
         <slot></slot>
     </button>
+{:else if variant == "show"}
+	<button class="show">
+        <slot></slot>
+    </button>
 {/if}
 
 <style>
@@ -42,5 +46,14 @@
     }
     .lightblue:hover {
         background-color: #d7dbff;
+    }
+    .show {
+        background-color: transparent;
+        color: #516193;
+        margin: 0 auto;
+        width: 100%;
+    }
+    .show:hover {
+        text-decoration: underline;
     }
 </style>

@@ -5,8 +5,6 @@
     export let companyLocation;
     export let isFullTime;
     export let vacancyDate;
-
-    let gray = '#b8bdcf';
 </script>
 
 <div class="vacancy">
