@@ -19,7 +19,7 @@
 			<input id="password" type="password">
 		</div>
 	</div>
-	<Button variant="singup">Resiter now</Button>
+	<Button variant="singup">Register now</Button>
 </form>
 
 <style>
