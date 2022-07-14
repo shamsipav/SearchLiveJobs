@@ -48,14 +48,10 @@
 
 <section class="vacancies">
 	<div class="container container-sm">
-		{#if vacancyList.length > 4}
-			{#each vacancyList as vacancy (vacancy.id)}
-				<Vacancy {...vacancy} />
-			{/each}
-		{:else}
-			{#each vacancyList as vacancy (vacancy.id)}
-				<Vacancy {...vacancy} />
-			{/each}
+		{#each vacancyList as vacancy (vacancy.id)}
+			<Vacancy {...vacancy} />
+		{/each}
+		{#if vacancyList.length < 5}
 			<Button on:click={addVacancy} variant="show">View All Job postings (5)</Button>
 		{/if}
 	</div>

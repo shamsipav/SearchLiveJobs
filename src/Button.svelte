@@ -15,14 +15,19 @@
     .variant-primary:hover {
         text-decoration: underline;
     }
-    .variant-blue {
+    .variant-blue, .variant-singup {
         background-color: #367cff;
 		color: #fff;
 		border-radius: 12px;
     }
-    .variant-blue:hover {
+    .variant-blue:hover, .variant-singup:hover {
         background-color: #2462d6;
         transition: all 0.3s ease;
+    }
+    .variant-singup {
+        padding: 12px 20px;
+        display: block;
+        margin: 0 auto;
     }
     .variant-lightblue {
         font-weight: bold;

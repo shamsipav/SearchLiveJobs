@@ -1,5 +1,9 @@
 <script>
 	import Button from './Button.svelte';
+
+    import Modal from './Modal.svelte';
+	import Content from './Content.svelte';
+	import { modal } from './stores.js';
 </script>
 <header>
     <div class="container">
@@ -16,7 +20,9 @@
         <div class="header__auth">
             <Button>Sign in</Button>
             <span class="line"></span>
-            <Button>Sign Up</Button>
+            <Modal show={$modal}>
+	            <Content />
+            </Modal>
         </div>
     </div>
 </header>
