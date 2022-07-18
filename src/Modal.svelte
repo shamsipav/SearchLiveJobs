@@ -1,574 +1,144 @@
-<!-- v1.3.0 -->
-
-<script context="module">
-  /**
-   * Create a Svelte component with props bound to it.
-   * @type {(component: Component, props: Record<string, any>) => Component}
-   */
-  export function bind(Component, props = {}) {
-    return function ModalComponent(options) {
-      return new Component({
-        ...options,
-        props: {
-          ...props,
-          ...options.props,
-        },
-      });
-    };
-  }
-</script>
-
 <script>
-  import * as svelte from 'svelte';
-  import { fade } from 'svelte/transition';
-  import { createEventDispatcher } from 'svelte';
+    import { onMount, createEventDispatcher } from 'svelte'
+    import { fade, blur } from 'svelte/transition'
+    
+    export let id = undefined
+    export let node = undefined
+    export let align = 'unset'
+    export let closable = true
+    export let className = ''
 
-  const dispatch = createEventDispatcher();
+    let visible = false
+    const dispatch = createEventDispatcher()
 
-  const baseSetContext = svelte.setContext;
-
-  /**
-   * Svelte component to be shown as the modal
-   * @type {Component | null}
-   */
-  export let show = null;
-
-  /**
-   * Svelte context key to reference the simple modal context
-   * @type {string}
-   */
-  export let key = 'simple-modal';
-
-  /**
-   * Accessibility label of the modal
-   * @see https://www.w3.org/TR/wai-aria-1.1/#aria-label
-   * @type {string | null}
-   */
-  export let ariaLabel = null;
-
-  /**
-   * Element ID holding the accessibility label of the modal
-   * @see https://www.w3.org/TR/wai-aria-1.1/#aria-labelledby
-   * @type {string | null}
-   */
-  export let ariaLabelledBy = null;
-
-  /**
-   * Whether to show a close button or not
-   * @type {Component | boolean}
-   */
-  export let closeButton = true;
-
-  /**
-   * Whether to close the modal on hitting the escape key or not
-   * @type {boolean}
-   */
-  export let closeOnEsc = true;
-
-  /**
-   * Whether to close the modal upon an outside mouse click or not
-   * @type {boolean}
-   */
-  export let closeOnOuterClick = true;
-
-  /**
-   * CSS for styling the background element
-   * @type {Record<string, string | number>}
-   */
-  export let styleBg = {};
-
-  /**
-   * CSS for styling the window wrapper element
-   * @type {Record<string, string | number>}
-   */
-  export let styleWindowWrap = {};
-
-  /**
-   * CSS for styling the window element
-   * @type {Record<string, string | number>}
-   */
-  export let styleWindow = {};
-
-  /**
-   * CSS for styling the content element
-   * @type {Record<string, string | number>}
-   */
-  export let styleContent = {};
-
-  /**
-   * CSS for styling the close element
-   * @type {Record<string, string | number>}
-   */
-  export let styleCloseButton = {};
-
-  /**
-   * Class name for the background element
-   * @type {string | null}
-   */
-  export let classBg = null;
-
-  /**
-   * Class name for window wrapper element
-   * @type {string | null}
-   */
-  export let classWindowWrap = null;
-
-  /**
-   * Class name for window element
-   * @type {string | null}
-   */
-  export let classWindow = null;
-
-  /**
-   * Class name for content element
-   * @type {string | null}
-   */
-  export let classContent = null;
-
-  /**
-   * Class name for close element
-   * @type {string | null}
-   */
-  export let classCloseButton = null;
-
-  /**
-   * Do not apply default styles to the modal
-   * @type {boolean}
-   */
-  export let unstyled = false;
-
-  /**
-   * @type {(key: any, context: any) => void}
-   */
-  export let setContext = baseSetContext;
-
-  /**
-   * Transition function for the background element
-   * @see https://svelte.dev/docs#transition_fn
-   * @type {(node: Element, parameters: BlurParams) => TransitionConfig}
-   */
-  export let transitionBg = fade;
-
-  /**
-   * Parameters for the background element transition
-   * @type {BlurParams}
-   */
-  export let transitionBgProps = { duration: 250 };
-
-  /**
-   * Transition function for the window element
-   * @see https://svelte.dev/docs#transition_fn
-   * @type {(node: Element, parameters: BlurParams) => TransitionConfig}
-   */
-  export let transitionWindow = transitionBg;
-
-  /**
-   * Parameters for the window element transition
-   * @type {BlurParams}
-   */
-  export let transitionWindowProps = transitionBgProps;
-
-  /**
-   * If `true` elements outside the modal can be focused
-   * @type {boolean}
-   */
-  export let disableFocusTrap = false;
-
-  const defaultState = {
-    ariaLabel,
-    ariaLabelledBy,
-    closeButton,
-    closeOnEsc,
-    closeOnOuterClick,
-    styleBg,
-    styleWindowWrap,
-    styleWindow,
-    styleContent,
-    styleCloseButton,
-    classBg,
-    classWindowWrap,
-    classWindow,
-    classContent,
-    classCloseButton,
-    transitionBg,
-    transitionBgProps,
-    transitionWindow,
-    transitionWindowProps,
-    disableFocusTrap,
-    unstyled,
-  };
-  let state = { ...defaultState };
-
-  let Component = null;
-
-  let background;
-  let wrap;
-  let modalWindow;
-  let scrollY;
-  let cssBg;
-  let cssWindowWrap;
-  let cssWindow;
-  let cssContent;
-  let cssCloseButton;
-  let currentTransitionBg;
-  let currentTransitionWindow;
-  let prevBodyPosition;
-  let prevBodyOverflow;
-  let prevBodyWidth;
-  let outerClickTarget;
-
-  const camelCaseToDash = (str) =>
-    str.replace(/([a-zA-Z])(?=[A-Z])/g, '$1-').toLowerCase();
-
-  const toCssString = (props) =>
-    props
-      ? Object.keys(props).reduce(
-          (str, key) => `${str}; ${camelCaseToDash(key)}: ${props[key]}`,
-          ''
-        )
-      : '';
-
-  const isFunction = (f) => !!(f && f.constructor && f.call && f.apply);
-
-  const updateStyleTransition = () => {
-    cssBg = toCssString(
-      Object.assign(
-        {},
-        {
-          width: window.innerWidth,
-          height: window.innerHeight,
-        },
-        state.styleBg
-      )
-    );
-    cssWindowWrap = toCssString(state.styleWindowWrap);
-    cssWindow = toCssString(state.styleWindow);
-    cssContent = toCssString(state.styleContent);
-    cssCloseButton = toCssString(state.styleCloseButton);
-    currentTransitionBg = state.transitionBg;
-    currentTransitionWindow = state.transitionWindow;
-  };
-
-  const toVoid = () => {};
-  let onOpen = toVoid;
-  let onClose = toVoid;
-  let onOpened = toVoid;
-  let onClosed = toVoid;
-
-  const open = (NewComponent, newProps = {}, options = {}, callback = {}) => {
-    Component = bind(NewComponent, newProps);
-    state = { ...defaultState, ...options };
-    updateStyleTransition();
-    disableScroll();
-    onOpen = (event) => {
-      if (callback.onOpen) callback.onOpen(event);
-      /**
-       * The open event is fired right before the modal opens
-       * @event {void} open
-       */
-      dispatch('open');
-      /**
-       * The opening event is fired right before the modal opens
-       * @event {void} opening
-       * @deprecated Listen to the `open` event instead
-       */
-      dispatch('opening'); // Deprecated. Do not use!
-    };
-    onClose = (event) => {
-      if (callback.onClose) callback.onClose(event);
-      /**
-       * The close event is fired right before the modal closes
-       * @event {void} close
-       */
-      dispatch('close');
-      /**
-       * The closing event is fired right before the modal closes
-       * @event {void} closing
-       * @deprecated Listen to the `close` event instead
-       */
-      dispatch('closing'); // Deprecated. Do not use!
-    };
-    onOpened = (event) => {
-      if (callback.onOpened) callback.onOpened(event);
-      /**
-       * The opened event is fired after the modal's opening transition
-       * @event {void} opened
-       */
-      dispatch('opened');
-    };
-    onClosed = (event) => {
-      if (callback.onClosed) callback.onClosed(event);
-      /**
-       * The closed event is fired after the modal's closing transition
-       * @event {void} closed
-       */
-      dispatch('closed');
-    };
-  };
-
-  const close = (callback = {}) => {
-    if (!Component) return;
-    onClose = callback.onClose || onClose;
-    onClosed = callback.onClosed || onClosed;
-    Component = null;
-    enableScroll();
-  };
-
-  const handleKeydown = (event) => {
-    if (state.closeOnEsc && Component && event.key === 'Escape') {
-      event.preventDefault();
-      close();
+    export const open = () => {
+        if (visible) return
+        visible = true
+        dispatch('open')
     }
 
-    if (Component && event.key === 'Tab' && !state.disableFocusTrap) {
-      // trap focus
-      const nodes = modalWindow.querySelectorAll('*');
-      const tabbable = Array.from(nodes).filter((node) => node.tabIndex >= 0);
-
-      let index = tabbable.indexOf(document.activeElement);
-      if (index === -1 && event.shiftKey) index = 0;
-
-      index += tabbable.length + (event.shiftKey ? -1 : 1);
-      index %= tabbable.length;
-
-      tabbable[index].focus();
-      event.preventDefault();
+    export const close = () => {
+        if (!visible) return
+        if (closable) {
+            visible = false
+            dispatch('close')
+        }
     }
-  };
 
-  const handleOuterMousedown = (event) => {
-    if (
-      state.closeOnOuterClick &&
-      (event.target === background || event.target === wrap)
-    )
-      outerClickTarget = event.target;
-  };
+    export const toggle = () => visible ? close() : open()
 
-  const handleOuterMouseup = (event) => {
-    if (state.closeOnOuterClick && event.target === outerClickTarget) {
-      event.preventDefault();
-      close();
-    }
-  };
-
-  const disableScroll = () => {
-    scrollY = window.scrollY;
-    prevBodyPosition = document.body.style.position;
-    prevBodyOverflow = document.body.style.overflow;
-    prevBodyWidth = document.body.style.width;
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.overflow = 'hidden';
-    document.body.style.width = '100%';
-  };
-
-  const enableScroll = () => {
-    document.body.style.position = prevBodyPosition || '';
-    document.body.style.top = '';
-    document.body.style.overflow = prevBodyOverflow || '';
-    document.body.style.width = prevBodyWidth || '';
-    window.scrollTo(0, scrollY);
-  };
-
-  setContext(key, { open, close });
-
-  let isMounted = false;
-
-  $: {
-    if (isMounted) {
-      if (isFunction(show)) {
-        open(show);
-      } else {
-        close();
-      }
-    }
-  }
-
-  svelte.onDestroy(() => {
-    if (isMounted) close();
-  });
-
-  svelte.onMount(() => {
-    isMounted = true;
-  });
+    onMount(() => {
+        document.addEventListener('keyup', (event) => {
+            if (event.key == 'Escape') {
+                close()
+            }
+        })
+    })
 </script>
 
-<svelte:window on:keydown={handleKeydown} />
-
-{#if Component}
-  <div
-    class={state.classBg}
-    class:bg={!unstyled}
-    on:mousedown={handleOuterMousedown}
-    on:mouseup={handleOuterMouseup}
-    bind:this={background}
-    transition:currentTransitionBg={state.transitionBgProps}
-    style={cssBg}
-  >
-    <div
-      class={state.classWindowWrap}
-      class:wrap={!unstyled}
-      bind:this={wrap}
-      style={cssWindowWrap}
-    >
-      <div
-        class={state.classWindow}
-        class:window={!unstyled}
-        role="dialog"
-        aria-modal="true"
-        aria-label={state.ariaLabelledBy ? null : state.ariaLabel || null}
-        aria-labelledby={state.ariaLabelledBy || null}
-        bind:this={modalWindow}
-        transition:currentTransitionWindow={state.transitionWindowProps}
-        on:introstart={onOpen}
-        on:outrostart={onClose}
-        on:introend={onOpened}
-        on:outroend={onClosed}
-        style={cssWindow}
-      >
-        {#if state.closeButton}
-          {#if isFunction(state.closeButton)}
-            <svelte:component this={state.closeButton} onClose={close} />
-          {:else}
-            <button
-              class={state.classCloseButton}
-              class:close={!unstyled}
-              aria-label="Close modal"
-              on:click={close}
-              style={cssCloseButton}
-            />
-          {/if}
-        {/if}
+<!-- svelte-ignore a11y-mouse-events-have-key-events -->
+{ #if visible }
+    <div class="kit-modal-wrapper" in:fade="{{ duration: 200 }}" out:fade="{{ delay: 100, duration: 200 }}">
+        <div class="shadow" on:click={ close }></div>
         <div
-          class={state.classContent}
-          class:content={!unstyled}
-          style={cssContent}
+            {id}
+            bind:this={ node }
+            class="kit-modal {className}"
+            style:--local-align={ align }
+            on:click
+            on:mouseleave
+            on:mouseover
+            in:blur="{{ delay: 100, duration: 200 }}" out:blur="{{ duration: 200 }}"
         >
-          <svelte:component this={Component} />
+            { #if closable }
+                <div class="close" on:click={ close }>
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M1.12756 1.09638C1.54164 0.699558 2.19901 0.713545 2.59584 1.12762L5.92734 4.60397L9.41947 1.11184C9.82501 0.706294 10.4825 0.706294 10.8881 1.11184C11.2936 1.51738 11.2936 2.1749 10.8881 2.58044L7.3647 6.10382L10.5574 9.43532C10.9542 9.8494 10.9402 10.5068 10.5261 10.9036C10.1121 11.3004 9.45469 11.2864 9.05786 10.8723L5.89576 7.57276L2.58038 10.8881C2.17484 11.2937 1.51732 11.2937 1.11178 10.8881C0.706233 10.4826 0.706233 9.82507 1.11178 9.41953L4.4584 6.07291L1.09632 2.56466C0.699497 2.15058 0.713484 1.49321 1.12756 1.09638Z" fill="#222222"/>
+                    </svg>
+                </div>
+            { /if }
+            <div class="kit-modal-content">
+                <slot />
+            </div>
+            <div class="footer">
+                <slot name="footer" />
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-{/if}
-<slot />
+{ /if }
 
 <style>
-  * {
-    box-sizing: border-box;
-  }
+    .kit-modal-wrapper {
+        display: grid;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        place-content: center;
+        place-items: center;
+        z-index: 32;
+    }
 
-  .bg {
-    position: fixed;
-    z-index: 1000;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.66);
-  }
+    .kit-modal-wrapper .shadow {
+        display: block;
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
 
-  .wrap {
-    position: relative;
-    margin: 2rem;
-    max-height: 100%;
-  }
+    .kit-modal-wrapper > * {
+        grid-column: 1;
+        grid-row: 1;
+    }
 
-  .window {
-    position: relative;
-    /* width: 40rem; */
-    width: 30rem;
-    max-width: 100%;
-    max-height: 100%;
-    margin: 2rem auto;
-    color: black;
-    /* border-radius: 0.5rem; */
-    border-radius: 12px;
-    background: white;
-  }
+    .kit-modal-wrapper .kit-modal {
+        display: block;
+        position: relative;
+        background-color: white;
+        color: black;
+        width: 750px;
+        text-align: var(--local-align);
+    }
 
-  .content {
-    position: relative;
-    /* padding: 1rem; */
-    padding: 30px 20px;
-    max-height: calc(100vh - 4rem);
-    overflow: auto;
-  }
+    :global(.kit-modal-wrapper .kit-modal > .close) {
+        display: grid;
+        place-content: center;
+        place-items: center;
+        position: absolute;
+        top: 2em;
+        right: 2em;
+        background: rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+        border-radius: 50%;
+        z-index: 100;
+        width: 46px;
+        height: 46px;
+    }
 
-  .close {
-    display: block;
-    box-sizing: border-box;
-    position: absolute;
-    z-index: 1000;
-    top: 1rem;
-    right: 1rem;
-    margin: 0;
-    padding: 0;
-    width: 1.5rem;
-    height: 1.5rem;
-    border: 0;
-    color: #367cff;
-    border-radius: 1.5rem;
-    background: white;
-    box-shadow: 0 0 0 1px #367cff;
-    transition: transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
-      background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
-    -webkit-appearance: none;
-  }
+    :global(.kit-modal-wrapper .kit-modal > .close:hover) {
+        background: rgba(0, 0, 0, 0.1);
+    }
 
-  .close:before,
-  .close:after {
-    content: '';
-    display: block;
-    box-sizing: border-box;
-    position: absolute;
-    top: 50%;
-    width: 1rem;
-    height: 1px;
-    background: #367cff;
-    transform-origin: center;
-    transition: height 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
-      background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
-  }
+    .kit-modal-wrapper .kit-modal > .kit-modal-content {
+        padding: 4em;
+    }
 
-  .close:before {
-    -webkit-transform: translate(0, -50%) rotate(45deg);
-    -moz-transform: translate(0, -50%) rotate(45deg);
-    transform: translate(0, -50%) rotate(45deg);
-    left: 0.25rem;
-  }
+    @media screen and (max-width: 768px) {
+        .kit-modal-wrapper .kit-modal {
+            width: 90%;
+        }
 
-  .close:after {
-    -webkit-transform: translate(0, -50%) rotate(-45deg);
-    -moz-transform: translate(0, -50%) rotate(-45deg);
-    transform: translate(0, -50%) rotate(-45deg);
-    left: 0.25rem;
-  }
+        .kit-modal-wrapper .kit-modal > .kit-modal-content {
+            padding: 3em 1em;
+        }
 
-  .close:hover {
-    background: #367cff;
-  }
-
-  .close:hover:before,
-  .close:hover:after {
-    height: 2px;
-    background: white;
-  }
-
-  /* .close:focus {
-    border-color: #3399ff;
-    box-shadow: 0 0 0 2px #3399ff;
-  }
-
-  .close:active {
-    transform: scale(0.9);
-  } */
-
-  .close:hover,
-  .close:focus,
-  .close:active {
-    outline: none;
-  }
+        :global(.kit-modal-wrapper .kit-modal > .close) {
+            top: 1em;
+            right: 1em;
+            width: 32px;
+            height: 32px;
+        }
+    }
 </style>

@@ -3,7 +3,6 @@
 	import Heading from './Heading.svelte';
 	import { vacancies } from './vacancies.js'
 	import Vacancy from './Vacancy.svelte';
-	import SecondHeading from './SecondHeading.svelte';
 	import { companies } from './companies.js'
 	import FeaturedCompany from './FeaturedCompany.svelte';
 	import Footer from './Footer.svelte';
