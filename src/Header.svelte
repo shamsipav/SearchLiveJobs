@@ -24,7 +24,6 @@
     </div>
 </header>
 
-
 <Modal bind:this={modal}>
     <form action="#">
     	<p class="form__heading">Sing Up</p>

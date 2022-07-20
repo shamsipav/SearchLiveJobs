@@ -1,3 +1,8 @@
+// interface Company {
+//     id: number,
+//     logo: 
+// }
+
 export const companies = [
     {
         id: 1,

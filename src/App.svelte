@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Header from './Header.svelte';
 	import Heading from './Heading.svelte';
 	import { vacancies } from './vacancies.js'
