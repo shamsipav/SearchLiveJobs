@@ -5,34 +5,34 @@
             <div class="nav__item">
                 <p class="nav__heading">Home</p>
                 <ul>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="/">Contact</a></li>
+                    <li><a href="/">About Us</a></li>
+                    <li><a href="/">Terms & Conditions</a></li>
                 </ul>
             </div>
             <div class="nav__item">
                 <p class="nav__heading">Employer</p>
                 <ul>
-                    <li><a href="#">Post a job</a></li>
-                    <li><a href="#">Search Resumes</a></li>
-                    <li><a href="#">Sign in</a></li>
+                    <li><a href="/">Post a job</a></li>
+                    <li><a href="/">Search Resumes</a></li>
+                    <li><a href="/">Sign in</a></li>
                 </ul>
             </div>
             <div class="nav__item">
                 <p class="nav__heading">Job Seeker</p>
                 <ul>
-                    <li><a href="#">Find jobs</a></li>
-                    <li><a href="#">Create Resumes</a></li>
-                    <li><a href="#">Sign in</a></li>
+                    <li><a href="/">Find jobs</a></li>
+                    <li><a href="/">Create Resumes</a></li>
+                    <li><a href="/">Sign in</a></li>
                 </ul>
             </div>
         </div>
         <div class="social">
             <ul>
-                <li class="_icon-facebook2"><a href="#">Facebook</a></li>
-                <li class="_icon-twitter"><a href="#">Twitter</a></li>
-                <li class="_icon-instagram"><a href="#">Instagram</a></li>
-                <li class="_icon-linkedin"><a href="#">Linkedln</a></li>
+                <li class="_icon-facebook2"><a href="/">Facebook</a></li>
+                <li class="_icon-twitter"><a href="/">Twitter</a></li>
+                <li class="_icon-instagram"><a href="/">Instagram</a></li>
+                <li class="_icon-linkedin"><a href="/">Linkedln</a></li>
             </ul>
         </div>
         <p class="copy">Copyright 2008-2019 Powered by Job Board Software</p>

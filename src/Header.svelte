@@ -1,19 +1,19 @@
-<script>
+<script lang="ts">
 	import Button from './Button.svelte';
     import Modal from './Modal.svelte';
 
-    let modal;
+    let modal: any;
 </script>
 <header>
     <div class="container">
         <div class="header__logo">Company Logo</div>
         <nav>
             <ul>
-                <li><a href="#" class="link">Jobs</a></li>
-                <li><a href="#" class="link">Companies</a></li>
-                <li><a href="#" class="link">Post a Job</a></li>
-                <li><a href="#" class="link">Resume Search</a></li>
-                <li><a href="#" class="link">Prising</a></li>
+                <li><a href="jobs" class="link">Jobs</a></li>
+                <li><a href="companies" class="link">Companies</a></li>
+                <li><a href="post-job" class="link">Post a Job</a></li>
+                <li><a href="search-resume" class="link">Resume Search</a></li>
+                <li><a href="prising" class="link">Prising</a></li>
             </ul>
         </nav>
         <div class="header__auth">
@@ -72,13 +72,6 @@
         grid-column-gap: 17px;
         align-items: center;
     }
-    .header__auth button {
-        background-color: transparent;
-        font-weight: bold;
-    }
-    .header__auth button:hover {
-        text-decoration: underline;
-    }
     .line {
         position: relative;
         top: 2px;
@@ -111,9 +104,6 @@
 		border-bottom: 1px solid #367cff;
 		font-size: 20px;
 	}
-	/* .form__item input:focus {
-		border-bottom: 2px solid #367cff;
-	} */
 	.form__item label {
 		margin: 0px 0px 5px 0px;
 		color: #516193;

@@ -1,5 +1,5 @@
-<script>
-    export let size;
+<script lang="ts">
+    export let size: number;
     const options = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
     let selected = options[size - 1];
 </script>

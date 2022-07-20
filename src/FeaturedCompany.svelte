@@ -1,11 +1,11 @@
-<script>
-    export let companyLogo;
-    export let companyName;
+<script lang="ts">
+    export let logo: string;
+    export let name: string;
 </script>
 
 <div class="company">
-    <img src="{companyLogo}" alt="companyLogo">
-    <p class="company__name">{companyName}</p>
+    <img src="{logo}" alt="companyLogo">
+    <p class="company__name">{name}</p>
 </div>
 
 <style>

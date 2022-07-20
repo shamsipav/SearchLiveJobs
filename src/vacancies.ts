@@ -1,38 +1,48 @@
-export const vacancies = [
+interface Vacancy {
+    id: number;
+    logo: string;
+    title: string;
+    name: string;
+    location: string;
+    isFullTime: boolean;
+    date: string;
+}
+
+export const vacancies: Vacancy[] = [
     {
         id: 1,
-        companyLogo: "img/apple.png",
+        logo: "img/apple.png",
         title: "Apple Main Manager",
-        companyName: "Apple Inc.",
-        companyLocation: "Los Angeles",
+        name: "Apple Inc.",
+        location: "Los Angeles",
         isFullTime: true,
-        vacancyDate: "April 12, 2020",
+        date: "April 12, 2020",
     },
     {
         id: 2,
-        companyLogo: "img/nike.png",
+        logo: "img/nike.png",
         title: "Nike Product Manager",
-        companyName: "Nike",
-        companyLocation: "Washington",
+        name: "Nike",
+        location: "Washington",
         isFullTime: true,
-        vacancyDate: "April 12, 2020",
+        date: "April 12, 2020",
     },
     {
         id: 3,
-        companyLogo: "img/amazon.png",
+        logo: "img/amazon.png",
         title: "Amazon Wirehouse Manager",
-        companyName: "Amazon",
-        companyLocation: "San Francisco",
+        name: "Amazon",
+        location: "San Francisco",
         isFullTime: false,
-        vacancyDate: "April 12, 2020",
+        date: "April 12, 2020",
     },
     {
         id: 4,
-        companyLogo: "img/twitter.png",
+        logo: "img/twitter.png",
         title: "Twitter Execute Manager",
-        companyName: "Twitter",
-        companyLocation: "Los Angeles",
+        name: "Twitter",
+        location: "Los Angeles",
         isFullTime: true,
-        vacancyDate: "April 12, 2020",
+        date: "April 12, 2020",
     },
 ];

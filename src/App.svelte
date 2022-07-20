@@ -13,12 +13,12 @@
 	function addVacancy() {
 		vacancyList = vacancyList.concat({ 
 			id: 5,
-        	companyLogo: "img/apple.png",
+        	logo: "img/apple.png",
         	title: "Apple Main Manager",
-        	companyName: "Apple Inc.",
-        	companyLocation: "Los Angeles",
+        	name: "Apple Inc.",
+        	location: "Los Angeles",
         	isFullTime: true,
-        	vacancyDate: "April 12, 2020",
+        	date: "April 12, 2020",
 		 });
 	}
 </script>
@@ -29,7 +29,7 @@
 	<div class="container container-bg">
 		<div class="main__content">
 			<div class="main__text">
-				<Heading size=1>Search 7 Live Jobs</Heading>
+				<Heading size={1}>Search 7 Live Jobs</Heading>
 				<p class="main__description">Finding your new job just got easier</p>
 			</div>
 		</div>
@@ -58,26 +58,26 @@
 
 <section class="sort">
 	<div class="container container-em">
-		<Heading size=3>Sort By</Heading>
+		<Heading size={3}>Sort By</Heading>
 		<div class="sort__change">
 			<Button variant="lightblue">Jobs by Category</Button>
 			<Button variant="lightblue">Jobs by City</Button>
 			<Button variant="lightblue">Jobs by State</Button>
 		</div>
 		<ul class="sort__list">
-			<li><a href="#">Accounting (5)</a></li>
-			<li><a href="#">Banking (1)</a></li>
-			<li><a href="#">Human Resource (1)</a></li>
-			<li><a href="#">Admin-Clerical (5)</a></li>
-			<li><a href="#">Finance (5)</a></li>
-			<li><a href="#">Management (1)</a></li>
+			<li><a href="sort/accounting">Accounting (5)</a></li>
+			<li><a href="sort/banking">Banking (1)</a></li>
+			<li><a href="sort/human Resource">Human Resource (1)</a></li>
+			<li><a href="sort/admin-Clerical">Admin-Clerical (5)</a></li>
+			<li><a href="sort/finance">Finance (5)</a></li>
+			<li><a href="sort/management">Management (1)</a></li>
 		</ul>
 	</div>
 </section>
 
 <section class="featured">
 	<div class="container">
-		<Heading size=2>Featured Companies</Heading>
+		<Heading size={2}>Featured Companies</Heading>
 		<div class="companies">
 			{#each companies as company (company.id)}
 				<FeaturedCompany {...company} />

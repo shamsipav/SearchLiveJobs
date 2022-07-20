@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     export let variant = "primary";
     let variantClass = `variant-${variant}`
 </script>

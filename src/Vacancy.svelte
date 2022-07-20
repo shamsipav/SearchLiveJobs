@@ -1,23 +1,23 @@
-<script>
-    export let companyLogo;
-    export let title;
-    export let companyName;
-    export let companyLocation;
-    export let isFullTime;
-    export let vacancyDate;
+<script lang="ts">
+    export let logo: string;
+    export let title: string;
+    export let name: string;
+    export let location: string;
+    export let isFullTime: boolean;
+    export let date: string;
 </script>
 
 <div class="vacancy">
     <div class="content">
-        <img src={companyLogo} class="image" alt="">
+        <img src={logo} class="image" alt="">
         <div class="info">
-            <a href="#" class="title">{title}</a>
+            <a href="{name}/{title}" class="title">{title}</a>
             <div class="company">
                 <div class="company__name _icon-briefcase">
-                    <span>{companyName}</span>                   
+                    <span>{name}</span>                   
                 </div>
                 <div class="company__location _icon-location_on">
-                    <span>{companyLocation}</span>
+                    <span>{location}</span>
                 </div>
             </div>
         </div>
@@ -28,7 +28,7 @@
                 <span class="operating__mode part-time">Part Time</span>
             {/if}
             <div class="date _icon-calendar-alt-stroke">
-                <span>{vacancyDate}</span>
+                <span>{date}</span>
             </div>
         </div>
     </div>
@@ -70,8 +70,6 @@
     }
     .company__name::before, .company__location::before {
         color: #b8bdcf;
-    }
-    .company__location {
     }
     .operating {
         display: inline-flex;
