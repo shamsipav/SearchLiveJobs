@@ -11,7 +11,7 @@
     <div class="content">
         <img src={logo} class="image" alt="">
         <div class="info">
-            <a href="{name}/{title}" class="title">{title}</a>
+            <a href="/" class="title">{title}</a>
             <div class="company">
                 <div class="company__name _icon-briefcase">
                     <span>{name}</span>                   
